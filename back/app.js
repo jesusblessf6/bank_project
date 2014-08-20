@@ -8,11 +8,13 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
-var app = express();
+var app = express();  
+var ejs = require('ejs');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.engine('.html', ejs.__express);
+app.set('view engine', 'html');
 
 app.use(favicon());
 app.use(logger('dev'));

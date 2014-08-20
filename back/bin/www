@@ -2,6 +2,8 @@
 var debug = require('debug')('back');
 var app = require('../app');
 
+debug('booting %s', "3000");
+
 app.set('port', process.env.PORT || 3000);
 
 var server = app.listen(app.get('port'), function() {
