@@ -10,11 +10,19 @@ var users = require('./routes/users');
 
 var app = express();  
 var ejs = require('ejs');
+var session = require('express-session');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine('.html', ejs.__express);
 app.set('view engine', 'html');
+
+app.use(session({
+    secret: "wing",
+    resave: true,
+    saveUninitialized : true
+
+}));
 
 app.use(favicon());
 app.use(logger('dev'));
