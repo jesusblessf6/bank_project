@@ -4,9 +4,7 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var routerDispatcher = require('./routes/routeDispatcher');
 
 var app = express();  
 var ejs = require('ejs');
@@ -32,8 +30,8 @@ app.use(cookieParser());
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+// dispatch the routes
+routerDispatcher(app);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -65,6 +63,5 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
-
 
 module.exports = app;
