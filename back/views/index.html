@@ -1,11 +1,15 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/bootstrap.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
-</html>
+<% include ./templates/header.html %>
+
+<body>
+  <h1><%= title %></h1>
+  <p>Welcome to <%= title %></p>
+  <button class="btn btn-primary">招行</button>
+</body>
+
+<script type="text/javascript">
+  socket.on('log', function(data){
+    alert(data.message);
+  });
+</script>
+
+<% include ./templates/footer.html %>

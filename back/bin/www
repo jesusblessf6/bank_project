@@ -12,3 +12,5 @@ var server = app.listen(app.get('port'), function() {
 
 //socket.io
 var io = require('socket.io').listen(server);
+var listener = require('../websockets/listener');
+listener(io);
