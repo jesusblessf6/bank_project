@@ -3,13 +3,17 @@
 <body>
   <h1><%= title %></h1>
   <p>Welcome to <%= title %></p>
-  <button class="btn btn-primary">招行</button>
+  <button class="btn btn-primary" onclick="javascript:crawlcmb();">招行</button>
 </body>
 
 <script type="text/javascript">
   socket.on('log', function(data){
-    alert(data.message);
+    //alert(data.message);
   });
+
+  function crawlcmb(){
+    socket.emit('startCrawling', {target:'cmb'});
+  }
 </script>
 
 <% include ./templates/footer.html %>

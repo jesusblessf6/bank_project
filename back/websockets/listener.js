@@ -5,6 +5,16 @@
 
 module.exports = function(io){
 	io.sockets.on('connection', function(socket){
-		socket.emit('log', {message: 'hello world'});
+		
+    socket.on('startCrawling', function(data){
+      switch(data.target){
+        case 'cmb':
+          //招行
+          
+          break;
+
+      }
+    });
+
 	});
 };
