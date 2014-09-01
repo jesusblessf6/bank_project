@@ -14,3 +14,8 @@ var server = app.listen(app.get('port'), function() {
 var io = require('socket.io').listen(server);
 var listener = require('../websockets/listener');
 listener(io);
+
+// catch the errors
+process.on('uncaughtException', function(err){
+  console.dir(err);
+});

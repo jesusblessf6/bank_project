@@ -11,6 +11,10 @@
     //alert(data.message);
   });
 
+  socket.on('feedback', function(data){
+  	alert(data.pageNum);
+  });
+
   function crawlcmb(){
     socket.emit('startCrawling', {target:'cmb'});
   }
