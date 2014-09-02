@@ -65,18 +65,111 @@ function getPageNum(driver, callback){
 
 //traversal pages, get all available activity ids
 function traversal(index, driver, callback){
-	//console.log(index);
-	driver.get('http://best.cmbchina.com/Shop/Search.aspx?citycode=0021&pageno=' + (index+1));
-	driver.findElements({className: 'shopname'}).then(function(elements){
-		elements.forEach(function(e){
-			
-		})
-	});
+	var url = require('url');
+	var async = require('async');
+	var shopids = [];
 
-	callback();
+	async.series([
+
+			function(callback){
+				driver.get('http://best.cmbchina.com/Shop/Search.aspx?citycode=0021&pageno=' + (index+1)).then(callback);
+			},
+
+			function(callback){
+				driver.findElements({className: 'shopname'}).then(function(elements){
+					elements.forEach(function(e, index, arr){
+						e.getAttribute('href').then(function(href){
+							var parsedUrl = url.parse(href, true);
+							//console.log(parsedUrl.query.id);
+							//detail(parsedUrl.query.id, driver);
+							shopids.push(parsedUrl.query.id);
+						});
+					});
+				}).then(callback);
+			},
+
+			function(callback){
+				async.each(shopids, 
+					function(id, next){
+						detail(id, driver, next);
+					}, 
+					function(err){
+						if(err){
+							console.dir(err);
+						}
+						callback();
+					}
+				);
+			}
+
+		], 
+
+		function(err){
+			if(err){
+				console.dir(err);
+			}
+			callback();
+		}
+	);
 }
 
 //get activity detail
-function detail(activityId, driver){
+function detail(activityId, driver, next){
+	
+	var async = require('async');
+	var activityModel = require('../models/activity').model;
+	var activity = new activityModel({
+		activityId : activityId
+	});
+	
+	async.series([
+			function(callback){
+				driver.get('http://best.cmbchina.com/Shop/Detail.aspx?citycode=0021&id='+activityId).then(callback);
+			},
 
+			function(callback){
+				driver.findElement({className : 'title'}).then(function(title){
+					title.getText().then(function(t){
+						activity.shopName = t;
+					});
+				}).then(callback);
+			},
+
+			function(callback){
+				driver.findElement({className: 'list'}).then(function(listDiv){
+					listDiv.findElements({tagName: 'tr'}).then(function(trs){
+						trs.forEach(function(tr, index, arr){
+							tr.findElements({tagName: 'td'}).then(function(tds){
+								tds[0].getText().then(function(tt){
+									if(tt.trim() === "服务电话："){
+										tds[1].getText().then(function(tt2){
+											activity.tel = tt2.trim();
+										});
+									}else if(tt.trim() === "商户地址："){
+										tds[1].getText().then(function(tt2){
+											activity.address = tt2.trim();
+										});
+									}else if(tt.trim() === "优惠日期："){
+										tds[1].getText().then(function(tt2){
+											
+										});
+									}
+								});
+							});
+						});
+					});
+				}).then(callback);
+			},
+
+			function(callback){
+				console.dir(activity);
+				callback();
+			}
+
+		], function(err){
+		if(err){
+			console.dir(err);
+		}
+		next();
+	});
 }

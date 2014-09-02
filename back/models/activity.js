@@ -6,7 +6,9 @@ var activitySchema = new db.Schema({
 	description: String,
 	shopName: String,
 	address: String,
-	activityId: String
+	activityId: String,
+	tel: String,
+	rule: String
 });
 
 var Activity = db.mongoose.model('Activity', activitySchema);
