@@ -151,7 +151,11 @@ function detail(activityId, driver, next){
 										});
 									}else if(tt.trim() === "优惠日期："){
 										tds[1].getText().then(function(tt2){
-											
+											var arr1 = tt2.split('(开始)');
+											var start = new Date(arr1[0].trim());
+											var end = new Date(arr1[1].replace('(截止)',''));
+											activity.start = start;
+											activity.end = end;
 										});
 									}
 								});
