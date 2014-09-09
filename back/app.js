@@ -24,7 +24,7 @@ app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ secret: 'keyboard cat', key: 'sid', cookie: { secure: true }, resave: true, saveUninitialized: true}));
 app.use(function(req, res, next){
-  res.locals.session = requ.session;
+  res.locals.session = req.session;
   next();
 });
 

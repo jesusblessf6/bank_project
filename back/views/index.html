@@ -1,10 +1,25 @@
 <% include ./templates/header.html %>
 
+<style type="text/css">
+	img.cmb{
+		width: 125px;
+		height: 115px;
+		background: url('/images/banklogo.png') -140px -70px
+	}
+</style>
+
+
 <body>
-  <h1><%= title %></h1>
-  <p>Welcome to <%= title %></p>
-  <p><%= viewers %></p>
-  <button class="btn btn-primary" onclick="javascript:crawlcmb();">招行</button>
+  <div class="container">
+  	<div class="page-header">
+  		<h1><%= title%></h1>
+  	</div>
+  	<div class="row">
+  		<div class="col-md-4">
+  			<a href="/banks/cmb"><img class="cmb" src=""/></a>
+  		</div>
+  	</div>
+  </div>
 </body>
 
 <script type="text/javascript">
