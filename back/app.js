@@ -15,13 +15,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.engine('.html', ejs.__express);
 app.set('view engine', 'html');
 
-app.use(session({
-  secret: "wing",
-  resave: true,
-  saveUninitialized : true
-
-}));
-
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -29,6 +22,21 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({ secret: 'keyboard cat', key: 'sid', cookie: { secure: true }, resave: true, saveUninitialized: true}));
+app.use(function(req, res, next){
+  res.locals.session = requ.session;
+  next();
+});
+
+// app.use(function(req, res, next){
+//   var sess = req.session;
+//   if(sess.viewers){
+//     sess.viewers ++;
+//   }else{
+//     sess.viewers = 1;
+//   }
+//   next();
+// });
 
 // dispatch the routes
 routerDispatcher(app);
