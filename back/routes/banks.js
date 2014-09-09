@@ -7,15 +7,8 @@ router.get('/', function(req, res){
 
 router.get('/:bankname', function(req, res){
 	//res.send(req.params.bankname);
-	//res.render('')
-	switch(req.params.bankname){
-		case 'cmb':
-			res.render('banks/cmb', {title: '招商银行'});
-			break;
-
-		default:
-			break;
-	}
+	res.render('banks/' + req.params.bankname, {title: ''});
+	
 });
 
 module.exports = router;
