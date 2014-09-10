@@ -41,7 +41,16 @@
 
 <script type="text/javascript">
 	function showAllCmbActivities(){
-		
+		$.ajax({
+			url: '/banks/cmb/AllActivities',
+			type: 'GET',
+			success: function(data){
+				$('#cmb_content').html(data);
+			}, 
+			error: function(a, b, c){
+				alert(c);
+			}
+		});
 	}
 </script>
 
