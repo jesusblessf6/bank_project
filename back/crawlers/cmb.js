@@ -152,6 +152,7 @@ function detail(activityId, driver, next){
 				activityModel.count({activityId : activity.activityId}, function(err, count){
 					if(count == 0){
 						//persistence
+						activity.bankCode = 'cmb';
 						activity.save(function(err){
 							if(err){
 								console.dir(err);

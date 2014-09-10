@@ -8,7 +8,8 @@ var activitySchema = new db.Schema({
 	address: String,
 	activityId: String,
 	tel: String,
-	rule: String
+	rule: String,
+	bankCode: String
 });
 
 var Activity = db.mongoose.model('Activity', activitySchema);
