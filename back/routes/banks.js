@@ -6,8 +6,7 @@ router.get('/', function(req, res){
 });
 
 router.get('/:bankname', function(req, res){
-	//console.log("bankname: " + req.params.bankname);
-	//res.send(req.params.bankname);
+	var Bank = require('../models/bank').model;
 	res.render('banks/' + req.params.bankname, {title: ''});
 	
 });
