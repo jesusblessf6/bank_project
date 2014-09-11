@@ -1,5 +1,6 @@
 <% include ./templates/header.html %>
 
+<link rel="stylesheet" type="text/css" href="/stylesheets/bootstrapValidator.min.css">
 <style type="text/css">
 	img.cmb{
 		width: 125px;
@@ -21,23 +22,97 @@
   	</div>
     <hr>
     <div class="row">
-      <button class="btn btn-lg btn-primary center-block">添加银行</button>
+      <button class="btn btn-lg btn-primary center-block" data-toggle="modal" data-target="#newBankModal">添加银行</button>
+    </div>
+  </div>
+
+  <div class="modal fade" id="newBankModal" tabindex="-1" role="dialog" aria-labelledby="newBankLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
+          </button>
+          <h4 class="modal-title">新增银行</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal" role="form" id="newBankForm">
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="bankName">
+                银行名称
+              </label>
+              <div class="col-md-6">
+                <input class="form-control" id="bankName" type="text" name="bankName">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="bankCode">
+                银行代码
+              </label>
+              <div class="col-md-6">
+                <input type="text" class="form-control" id="bankCode" name="bankCode">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-primary" id="saveNewBank">保存</button>
+                <button class="btn btn-default" data-dismiss="modal">关闭</button>
+              </div>
+            </div>
+          </form>
+          
+        </div>
+      </div>
     </div>
   </div>
 </body>
 
+<%include ./templates/scripts.html %>
+<script type="text/javascript" src="/javascripts/bootstrapValidator.min.js"></script>
+<script type="text/javascript" src="/javascripts/language/zh_CN.js"></script>
+
 <script type="text/javascript">
-  socket.on('log', function(data){
-    //alert(data.message);
+
+  $(document).ready(function(){
+    $('#newBankForm').bootstrapValidator({
+      message: "输入有误",
+      excluded:':disabled',
+      live: 'enabled',
+      trigger: null,
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+      fields:{
+        bankName: {
+          message: "银行名称输入有误",
+          trigger: 'blur',
+          validators:{
+            notEmpty: {
+              message: "银行名称不能为空"
+            }
+          }
+        },
+        bankCode: {
+          message: "银行编码输入有误",
+          trigger: 'blur',
+          validators:{
+            notEmpty:{
+              message: "银行编码不能为空"
+            }
+          }
+        }
+      },
+      submitHandler: function(validator, form, submitButton){
+        $.ajax({
+          url: '/banks/'
+        });
+      }
+
+    });
   });
 
-  socket.on('feedback', function(data){
-  	alert(data.pageNum);
-  });
-
-  function crawlcmb(){
-    socket.emit('startCrawling', {target:'cmb'});
-  }
 </script>
 
 <% include ./templates/footer.html %>
