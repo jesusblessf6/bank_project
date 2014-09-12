@@ -91,6 +91,13 @@
           validators:{
             notEmpty: {
               message: "银行名称不能为空"
+            },
+            remote: {
+              message: "该银行名称已存在",
+              url :'/banks/check',
+              data: {
+                checkField : 'name'
+              }
             }
           }
         },
@@ -100,13 +107,21 @@
           validators:{
             notEmpty:{
               message: "银行编码不能为空"
+            },
+            remote: {
+              message: "该银行编码已存在",
+              url :'/banks/check',
+              data: {
+                checkField : 'code'
+              }
             }
           }
         }
       },
       submitHandler: function(validator, form, submitButton){
         $.ajax({
-          url: '/banks/'
+          url: '/banks',
+          type: 'POST'
         });
       }
 
