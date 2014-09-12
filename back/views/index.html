@@ -56,7 +56,8 @@
             <div class="form-group">
               <div class="col-md-12 text-center">
                 <button type="submit" class="btn btn-primary" id="saveNewBank">保存</button>
-                <button class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-default" id="resetButton">重置</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
               </div>
             </div>
           </form>
@@ -73,8 +74,9 @@
 
 <script type="text/javascript">
 
+  var validator = null;
   $(document).ready(function(){
-    $('#newBankForm').bootstrapValidator({
+    validator = $('#newBankForm').bootstrapValidator({
       message: "输入有误",
       excluded:':disabled',
       live: 'enabled',
@@ -121,11 +123,23 @@
       submitHandler: function(validator, form, submitButton){
         $.ajax({
           url: '/banks',
-          type: 'POST'
+          type: 'POST',
+          success: function(data){
+            if(data.status === 'failed'){
+              
+            }
+          },
+          error: function(a, b, c){
+
+          }
         });
       }
 
     });
+  });
+
+  $('#resetButton').on('click', function(){
+    $('#newBankForm').data('bootstrapValidator').resetForm(true);
   });
 
 </script>

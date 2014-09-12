@@ -32,7 +32,24 @@ router.get('/', function(req, res){
 
 //POST '/' : banks-create;
 router.post('/', function(req, res){
+	var bankName = req.param('bankName');
+	var bankCode = req.param('bankCode');
+	var result = {};
 
+	var bank = new Bank({
+		bankName: bankName,
+		bankCode: bankCode
+	});
+
+	bank.save(function(err, result){
+		if(err){
+			result.status = 'failed';
+			result.message = err;
+		}else{
+			result.status = 'success';
+		}
+		res.json(result);
+	});
 });
 
 
