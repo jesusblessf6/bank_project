@@ -34,19 +34,23 @@ router.get('/', function(req, res){
 router.post('/', function(req, res){
 	var bankName = req.param('bankName');
 	var bankCode = req.param('bankCode');
+	console.log(bankName);
+	console.log(bankCode);
 	var result = {};
 
 	var bank = new Bank({
-		bankName: bankName,
-		bankCode: bankCode
+		name: bankName,
+		code: bankCode
 	});
 
-	bank.save(function(err, result){
+	bank.save(function(err, r){
 		if(err){
 			result.status = 'failed';
 			result.message = err;
+			console.dir(err);
 		}else{
 			result.status = 'success';
+			console.log('success');
 		}
 		res.json(result);
 	});
@@ -61,7 +65,7 @@ router.post('/check', function(req, res){
 	switch(field){
 		case 'name':
 			var bankName = req.param('bankName');
-			Bank.count({bankName : bankName}, function(err, count){
+			Bank.count({name : bankName}, function(err, count){
 				if(count === 0){
 					result.valid = true;
 				}
@@ -70,7 +74,7 @@ router.post('/check', function(req, res){
 			break;
 		case 'code':
 			var bankCode = req.param('bankCode');
-			Bank.count({bankCode : bankCode}, function(err, count){
+			Bank.count({code : bankCode}, function(err, count){
 				if(count === 0){
 					result.valid = true;
 				}

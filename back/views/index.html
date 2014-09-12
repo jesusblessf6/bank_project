@@ -36,7 +36,7 @@
           <h4 class="modal-title">新增银行</h4>
         </div>
         <div class="modal-body">
-          <form class="form-horizontal" role="form" id="newBankForm">
+          <form class="form-horizontal" id="newBankForm">
             <div class="form-group">
               <label class="col-md-4 control-label" for="bankName">
                 银行名称
@@ -55,7 +55,7 @@
             </div>
             <div class="form-group">
               <div class="col-md-12 text-center">
-                <button type="submit" class="btn btn-primary" id="saveNewBank">保存</button>
+                <button class="btn btn-primary" id="saveNewBank" type="submit">保存</button>
                 <button type="button" class="btn btn-default" id="resetButton">重置</button>
               </div>
             </div>
@@ -69,13 +69,12 @@
 <%include ./templates/scripts.html %>
 <script type="text/javascript" src="/javascripts/bootstrapValidator.min.js"></script>
 <script type="text/javascript" src="/javascripts/language/zh_CN.js"></script>
-<script type="text/javascript" src="/plugins/layer/layer.min.js"></script>
+<script type="text/javascript" src="/plugins/layer/layer.js"></script>
 
 <script type="text/javascript">
 
-  var validator = null;
   $(document).ready(function(){
-    validator = $('#newBankForm').bootstrapValidator({
+    $('#newBankForm').bootstrapValidator({
       message: "输入有误",
       excluded:':disabled',
       live: 'enabled',
@@ -118,22 +117,29 @@
             }
           }
         }
-      },
-      submitHandler: function(validator, form, submitButton){
-        $.ajax({
-          url: '/banks',
-          type: 'POST',
-          success: function(data){
-            if(data.status === 'failed'){
-              
-            }
-          },
-          error: function(a, b, c){
-
-          }
-        });
       }
+    }).on('success.form.bv', function(e){
+      e.preventDefault();
+      var f = $(e.target);
+      var validator = f.data('bootstrapValidator');
 
+      $.ajax({
+        url : '/banks',
+        type: 'POST',
+        dataType: 'json',
+        data : f.serialize(),
+        success: function(data){
+          if(data.status === 'failed'){
+            alertMsg(data.message, 'error');
+          }else if(data.status === 'success'){
+            alertMsg('操作成功', 'success');
+            validator.resetForm(true);
+          }
+        },
+        error: function(a, b, c){
+          alertMsg(c, 'error');
+        }
+      });
     });
   });
 
