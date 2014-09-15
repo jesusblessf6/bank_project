@@ -88,20 +88,12 @@ router.post('/check', function(req, res){
 });
 
 
-
-router.get('/new', function(req, res){
-	//console.log('get new page');
-});
-
+// open the bank index page
 router.get('/:bankname', function(req, res){
-	console.log('get bank');
-	res.render('banks/' + req.params.bankname, {title: ''});
-	
+	res.render('banks/'+req.params.bankname+'/index', {title: ''});
 });
 
-router.get('/:bankname/:actionname', function(req, res){
-	console.log("bankname: " + req.params.bankname + "; actionname: " + req.params.actionname);
-	res.render('banks/'+ req.params.bankname + req.params.actionname, {title: ''});
-});
+
+
 
 module.exports = router;
