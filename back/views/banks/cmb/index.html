@@ -12,7 +12,7 @@
 						<a href="#">Home</a>
 					</li>
 					<li>
-						<a href="javascript:void(0);" onclick="javascript:showAllCmbActivities();">所有活动</a>
+						<a href="javascript:void(0);" data-action="activities" class="ajax-link">所有活动</a>
 					</li>
 					<li>
 						<a href="#">活动类型</a>
@@ -42,18 +42,19 @@
 
 <%include ../../templates/scripts.html%>
 <script type="text/javascript">
-	function showAllCmbActivities(){
+	$('.ajax-link').on('click', function(e){
+		var action = $(e.target).attr('data-action');
 		$.ajax({
-			url: '/banks/cmb/AllActivities',
+			url: '/banks/cmb/'+ action,
 			type: 'GET',
 			success: function(data){
 				$('#cmb_content').html(data);
-			}, 
-			error: function(a, b, c){
+			},
+			error: function(a,b,c){
 				alert(c);
 			}
 		});
-	}
+	});
 </script>
 
 <% include ../../templates/footer.html %>

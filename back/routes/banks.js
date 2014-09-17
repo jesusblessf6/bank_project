@@ -94,6 +94,11 @@ router.get('/:bankname', function(req, res){
 });
 
 
+// open all the activities of current bank
+router.get('/:bankname/activities', function(req, res){
+	var bankname = req.params.bankname;
+	res.render('banks/' + bankname + "/allActivities", {title: 'hello activities'});
+});
 
 
 module.exports = router;
